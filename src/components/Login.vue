@@ -49,7 +49,7 @@
   })
 
   const login = async () => {
-    let result = await axios.post("/login", {
+    let result = await axios.post("/user/login", {
       account: user.account,
       password: user.password
     })
@@ -72,7 +72,7 @@
 
   }
   const redirectToSignup = () => {
-    router.push("/signup")
+    router.push("/user/signup")
   }
 </script>
 

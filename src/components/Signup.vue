@@ -60,7 +60,7 @@ const signup = async () => {
     nickname: user.nickname
   }
   console.log(requestBody)
-  let result = await axios.post("/signup", requestBody)
+  let result = await axios.post("/user/signup", requestBody)
 
   console.log(result.data)
   if (result.data.code === 200){
@@ -78,7 +78,7 @@ const signup = async () => {
 
 }
   const redirectToLogin = () =>{
-    router.push("/login")
+    router.push("/user/login")
 }
 </script>
 
