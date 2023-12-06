@@ -6,8 +6,10 @@ export const UserStore = defineStore("user", {
             uid: "",
             nickname: "",
             account: "",
+            password: "",
             userType: 0, // 0为普通用户， 1为管理员
-            token: ""
+            token: "",
+            remember: false
         }
     },
     actions: {},

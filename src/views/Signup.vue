@@ -78,7 +78,7 @@ const signup = async () => {
 
 }
   const redirectToLogin = () =>{
-    router.push("/user/login")
+    router.push("/login")
 }
 </script>
 

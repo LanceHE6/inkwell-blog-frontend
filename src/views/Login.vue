@@ -43,9 +43,9 @@
     }
 
   const user = reactive({
-    account: "",
-    password: "",
-    remember: false
+    account: localStorage.getItem("account") || "",
+    password: localStorage.getItem("password") || "",
+    remember: localStorage.getItem("remember") === '1',
   })
 
   const login = async () => {
@@ -64,7 +64,20 @@
       userStore.userType = result.data.userType
       userStore.token = result.data.token
       console.log(userStore.token)
+
+      // 记住账号密码
+      if (user.remember){
+        localStorage.setItem("account", userStore.account)
+        localStorage.setItem("password", user.password)
+        localStorage.setItem("remember", user.remember ? '1': '0')
+      }else {
+        localStorage.setItem("account", "")
+        localStorage.setItem("password", "")
+        localStorage.setItem("remember", "")
+      }
+
       message.success("登录成功")
+      await router.push("/dashboard")
     }else {
       console.log("登录失败")
       message.error("账号或密码错误")
@@ -72,7 +85,7 @@
 
   }
   const redirectToSignup = () => {
-    router.push("/user/signup")
+    router.push("/signup")
   }
 </script>
 
