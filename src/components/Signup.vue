@@ -2,8 +2,8 @@
   <div class="signup-panel">
     <n-card title="用户注册">
       <n-form :rules="rules" :model="user">
-        <n-form-item path="account" label="昵称">
-          <n-input v-model:value="user.nickName" placeholder="请输入昵称"></n-input>
+        <n-form-item path="nickname" label="昵称">
+          <n-input v-model:value="user.nickname" placeholder="请输入昵称"></n-input>
         </n-form-item>
         <n-form-item path="account" label="账号">
           <n-input v-model:value="user.account" placeholder="请输入账号"></n-input>
@@ -14,6 +14,7 @@
       </n-form>
       <template #footer>
         <n-button @click="signup">注册</n-button>
+        <n-button strong secondary type="info" @click="redirectToLogin">已有账号？登录</n-button>
       </template>
     </n-card>
   </div>
@@ -21,7 +22,9 @@
 
 <script setup>
 import {ref, reactive, inject} from "vue";
+import  {useRouter} from "vue-router";
 
+const router = useRouter()
 //注入获取axios
 const axios = inject("axios")
 
@@ -44,29 +47,38 @@ let rules = {
 }
 
 const user = reactive({
-  nickName: "",
+  nickname: "",
   account: "",
   password: "",
-  remember: false
 })
 
 const signup = async () => {
-  let result = await axios.post("/signup", {
-    nickName: user.nickName,
-    account: user.account,
-    password: user.password
-  })
-  console.log(result)
-  if (result.code === 200){
-    console.log("注册成功")
-    // ....token userId
 
+  const requestBody = {
+    account: user.account,
+    password: user.password,
+    nickname: user.nickname
+  }
+  console.log(requestBody)
+  let result = await axios.post("/signup", requestBody)
+
+  console.log(result.data)
+  if (result.data.code === 200){
+    console.log("注册成功")
     message.success("注册成功")
+
+    setTimeout(() =>{
+      redirectToLogin()
+    }, 2000)
+
   }else {
     console.log("注册失败")
-    message.error("注册失败")
+    message.error("注册失败\n" + result.data.message)
   }
 
+}
+  const redirectToLogin = () =>{
+    router.push("/login")
 }
 </script>
 

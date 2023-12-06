@@ -3,8 +3,9 @@ import {defineStore} from "pinia";
 export const UserStore = defineStore("user", {
     state :() =>{
         return {
-            nickName: "",
-            userId: "",
+            uid: "",
+            nickname: "",
+            account: "",
             userType: 0, // 0为普通用户， 1为管理员
             token: ""
         }

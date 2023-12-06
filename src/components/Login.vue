@@ -3,7 +3,7 @@
     <n-card title="用户登录">
      <n-form :rules="rules" :model="user">
        <n-form-item path="account" label="账号">
-         <n-input v-model:value="user.userId" placeholder="账号"></n-input>
+         <n-input v-model:value="user.account" placeholder="账号"></n-input>
        </n-form-item>
        <n-form-item path="password" label="密码">
          <n-input v-model:value="user.password" type=password placeholder="密码"></n-input>
@@ -12,6 +12,7 @@
       <template #footer>
         <n-checkbox v-model:checked="user.remember" label="记住我"></n-checkbox>
         <n-button @click="login">登录</n-button>
+        <n-button strong secondary type="info" @click="redirectToSignup">还没有账号？注册</n-button>
       </template>
     </n-card>
   </div>
@@ -20,16 +21,18 @@
 <script setup>
   import {ref, reactive, inject} from "vue";
   import {UserStore} from "@/store/UserStore";
+  import {useRouter} from "vue-router";
 
   //注入获取axios
   const axios = inject("axios")
 
   const userStore = UserStore()
+  const router = useRouter()
   const message = inject("message")
 
   // 输入校验规则
   let rules = {
-      userId:[
+      account:[
         {required: true, message: "请输入账号", trigger: "blur"},
         {min: 3, max: 12, message: "账号长度在3到12个字符", trigger: "blur"},
       ],
@@ -40,29 +43,36 @@
     }
 
   const user = reactive({
-    userId: "",
+    account: "",
     password: "",
     remember: false
   })
 
   const login = async () => {
     let result = await axios.post("/login", {
-      userId: user.userId,
+      account: user.account,
       password: user.password
     })
-    console.log(result)
-    if (result.code === 200){
+
+    if (result.data.code === 200){
       console.log("登录成功")
       // 需要将返回的数据存入Store中
-      userStore.nickName = ""
       // ....token userId
-
+      userStore.uid = result.data.uid
+      userStore.nickname = result.data.nickname
+      userStore.account = result.data.account
+      userStore.userType = result.data.userType
+      userStore.token = result.data.token
+      console.log(userStore.token)
       message.success("登录成功")
     }else {
       console.log("登录失败")
       message.error("账号或密码错误")
     }
 
+  }
+  const redirectToSignup = () => {
+    router.push("/signup")
   }
 </script>
 
