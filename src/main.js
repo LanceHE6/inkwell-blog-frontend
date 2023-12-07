@@ -6,6 +6,7 @@ import {createDiscreteApi} from "naive-ui";
 import naive from "naive-ui";
 import {createPinia} from "pinia";
 import axios from "axios";
+import {UserStore} from "@/store/UserStore";
 
 // 设置默认后端服务地址
 axios.defaults.baseURL = "http://localhost:8080"
@@ -27,9 +28,17 @@ app.provide("axios", axios)
 app.provide("message", message)
 app.provide("notification", notification)
 app.provide("dialog", dialog)
+app.provide("server_url", axios.defaults.baseURL)
 
 app.use(naive)
 app.use(router)
 app.use(createPinia())
+
+// 配置全局拦截器，所有的请求都会经过这里添加token请求头
+const userStore = UserStore()
+axios.interceptors.request.use((config) =>{
+    config.headers.token = userStore.token
+    return config
+})
 
 app.mount('#app')
