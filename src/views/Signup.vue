@@ -1,7 +1,7 @@
 <template>
   <div class="signup-panel">
     <n-card title="用户注册">
-      <n-form :rules="rules" :model="user">
+      <n-form :rules="rules" :model="user" ref="formRef">
         <n-form-item path="nickname" label="昵称">
           <n-input v-model:value="user.nickname" placeholder="请输入昵称"></n-input>
         </n-form-item>
@@ -13,7 +13,7 @@
         </n-form-item>
       </n-form>
       <template #footer>
-        <n-button @click="signup">注册</n-button>
+        <n-button @click="validateAndSignup">注册</n-button>
         <n-button strong secondary type="info" @click="redirectToLogin">已有账号？登录</n-button>
       </template>
     </n-card>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, inject} from "vue";
+import {ref, reactive, inject, markRaw} from "vue";
 import  {useRouter} from "vue-router";
 
 const router = useRouter()
@@ -40,7 +40,7 @@ let rules = {
     {required: true, message: "请输入密码", trigger: "blur"},
     {min: 6, max: 18, message: "密码长度在6到18个字符", trigger: "blur"},
   ],
-  nickName:[
+  nickname:[
     {required: true, message: "请输入昵称", trigger: "blur"},
     {min: 3, max: 8, message: "昵称长度在3到8个字符", trigger: "blur"},
   ],
@@ -51,6 +51,16 @@ const user = reactive({
   account: "",
   password: "",
 })
+const formRef = ref(null)
+const validateAndSignup = async () => {
+
+  const valid = await formRef.value.validate()
+  console.log(valid)
+  //判断formRef表单验证是否全部通过
+    if (!valid) {
+      await signup()
+    }
+};
 
 const signup = async () => {
 
