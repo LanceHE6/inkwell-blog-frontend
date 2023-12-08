@@ -4,6 +4,7 @@ import Signup from "@/views/Signup.vue";
 import Dashboard from "@/views/dashboard/Dashboard.vue";
 import Category from "@/views/dashboard/Category.vue";
 import Article from "@/views/dashboard/Article.vue";
+import AdminInfo from "@/views/dashboard/AdminInfo.vue";
 // import HomePage from "@/views/HomePage.vue";
 
 
@@ -16,6 +17,7 @@ const routes = [
             // 二级路由
             { path: '/dashboard/category', component: Category , name: 'category'},
             { path: '/dashboard/article', component: Article , name: 'article'},
+            { path: '/dashboard/adminInfo', component: AdminInfo , name: 'adminInfo'},
         ]},
 
 ];
