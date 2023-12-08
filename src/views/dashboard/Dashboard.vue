@@ -19,7 +19,7 @@
 
 import {UserStore} from "@/store/UserStore";
 
-import {ref, reactive, inject} from "vue";
+import {ref, reactive, inject, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
 //注入获取axios
@@ -31,6 +31,7 @@ const message = inject("message")
 
 let menus = [
   {name: "首页", href: "/homepage"},
+  {name: "个人中心", href: "/dashboard/adminInfo"},
   {name: "文章管理", href: "/dashboard/article"},
   {name: "分类管理", href: "/dashboard/category"},
   {name: "退出登录", href: "logout"},
@@ -43,6 +44,9 @@ const toPage = (menu) => {
     router.push(menu.href)
   }
 }
+onMounted(() =>{
+  toPage(menus[1])
+})
 
 </script>
 
