@@ -1,30 +1,42 @@
 <template>
   <div>
     <n-button @click="showAddModal=true">添加分类</n-button>
-      <n-table :bordered="false" :single-line="false">
 
-        <thead>
-        <tr>
-          <th>编号</th>
-          <th>名称</th>
-          <th>操作</th>
-        </tr>
-        </thead>
+    <n-space vertical>
+      <n-card>
+        <n-skeleton v-if="loading" text :repeat="6" />
+        <template v-else>
+          <!--分类表格-->
+          <n-table :bordered="false" :single-line="false">
 
-        <tbody>
-        <tr v-for="(category, index) in categoryList">
-          <td>{{ category.id }}</td>
-          <td>{{ category.name }}</td>
-          <td>
-            <n-space>
-              <n-button @click="toUpdate(category)">修改</n-button>
-              <n-button @click="del(category)">删除</n-button>
-            </n-space>
-          </td>
-        </tr>
-        </tbody>
+            <thead>
+            <tr>
+              <th>编号</th>
+              <th>名称</th>
+              <th>操作</th>
+            </tr>
+            </thead>
 
-      </n-table>
+            <tbody>
+            <tr v-for="(category, index) in categoryList">
+              <td>{{ category.id }}</td>
+              <td>{{ category.name }}</td>
+              <td>
+                <n-space>
+                  <n-button @click="toUpdate(category)">修改</n-button>
+                  <n-button @click="del(category)">删除</n-button>
+                </n-space>
+              </td>
+            </tr>
+            </tbody>
+
+          </n-table>
+
+        </template>
+      </n-card>
+    </n-space>
+
+
 
     <n-modal v-model:show="showAddModal">
       <n-card
@@ -83,6 +95,8 @@ const categoryList =  ref([])
 const showAddModal = ref(false)
 const showUpdateModal = ref(false)
 
+const loading = ref(true)
+
 const addCategory = reactive({
   name: ""
 })
@@ -98,7 +112,11 @@ const loadData = async () => {
   if (result.data.code === 200){
     console.log("请求成功")
     console.log(result.data.rows)
+    loading.value = true
     categoryList.value = result.data.rows
+    setInterval(() =>{
+      loading.value = false
+    }, 1000)
   }else {
     console.log("请求失败")
   }
@@ -132,13 +150,11 @@ const del = async (category) => {
       const requestBody = {
         id: category.id
       }
-      //TODO 完善分类删除请求
-      let result = await axios.post("/category/del", requestBody)
+      let result = await axios.post("/category/delete", requestBody)
 
       if (result.data.code === 200){
         console.log("请求成功")
         message.success("删除成功")
-
         await loadData()
       } else {
         message.error("删除失败 " + result.data.message)
@@ -177,6 +193,7 @@ const update = async () => {
     console.log(result.data.message)
   }
 }
+
 
 </script>
 
