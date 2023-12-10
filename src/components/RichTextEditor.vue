@@ -26,7 +26,8 @@ import {inject, onBeforeUnmount, onMounted, ref, shallowRef} from "vue";
 const serverUrl = inject("server_url")
 // 编辑器实例，必须用 shallowRef，重要！
 const editorRef = shallowRef();
-const toolbarConfig = {};
+// 去向上传视频功能
+const toolbarConfig = { excludeKeys: ['uploadVideo']};
 const editorConfig = { placeholder: '请输入内容...' };
 editorConfig.MENU_CONF = {}
 // 指定图片上传的服务端地址
@@ -35,6 +36,15 @@ editorConfig.MENU_CONF['uploadImage'] = {
   fieldName: 'file',
   // 小于该值就插入 base64 格式（而不上传），默认为 0
   base64LimitSize: 5 * 1024 // 5kb
+}
+// 判断返回图片地址是否包含服务端地址
+editorConfig.MENU_CONF['insertImage'] = {
+  parseImageSrc: (src) => {
+    if(src.indexOf('http') !== 0){
+      return serverUrl + src
+    }
+    return src
+  }
 }
 
 
