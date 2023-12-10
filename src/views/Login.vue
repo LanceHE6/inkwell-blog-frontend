@@ -63,6 +63,7 @@
       userStore.account = result.data.account
       userStore.userType = result.data.userType
       userStore.token = result.data.token
+      localStorage.setItem("token", userStore.token)
       console.log(userStore.token)
 
       // 记住账号密码
