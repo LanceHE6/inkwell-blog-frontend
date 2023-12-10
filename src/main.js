@@ -37,7 +37,7 @@ app.use(createPinia())
 // 配置全局拦截器，所有的请求都会经过这里添加token请求头
 const userStore = UserStore()
 axios.interceptors.request.use((config) =>{
-    config.headers.token = userStore.token
+    config.headers.token = localStorage.getItem("token")
     return config
 })
 
