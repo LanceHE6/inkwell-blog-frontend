@@ -63,6 +63,7 @@
       userStore.account = result.data.account
       userStore.userType = result.data.userType
       userStore.token = result.data.token
+      userStore.avatar = result.data.avatar
       localStorage.setItem("token", userStore.token)
       console.log(userStore.token)
 
@@ -78,7 +79,7 @@
       }
 
       message.success("登录成功")
-      await router.push("/dashboard")
+      await router.push("/home")
     }else {
       console.log("登录失败")
       message.error("账号或密码错误")
