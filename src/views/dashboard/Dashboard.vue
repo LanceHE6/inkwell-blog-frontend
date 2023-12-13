@@ -1,11 +1,18 @@
 <template>
 
-  <div class="title">Inkwell管理后台</div>
+  <n-card :embedded="true" class="title" size="large">Inkwell管理后台</n-card>
 
   <div class="main-panel">
     <div class="menus">
       <div v-for="(menu, index) in  menus" :key="index" @click="toPage(menu)">
-        {{menu.name}}
+        <n-button type="primary" size="large" strong ghost :color="(selectedMenu === menu? '#70C0E8' : '')" class="menu-button">
+          <template #icon>
+            <n-icon>
+<!--              <cash-icon />-->
+            </n-icon>
+          </template>
+          {{menu.name}}
+        </n-button>
       </div>
     </div>
 
@@ -30,18 +37,20 @@ const router = useRouter()
 const message = inject("message")
 
 let menus = [
-  {name: "首页", href: "/homepage"},
-  {name: "个人中心", href: "/dashboard/adminInfo"},
+  {name: "首页", href: "/home"},
   {name: "文章管理", href: "/dashboard/article"},
   {name: "分类管理", href: "/dashboard/category"},
   {name: "退出登录", href: "logout"},
 ]
+
+let selectedMenu;
 
 const toPage = (menu) => {
   if(menu.href === "logout"){
     router.push("/login")
   }else {
     router.push(menu.href)
+    selectedMenu = menu
   }
 }
 onMounted(() =>{
@@ -55,7 +64,7 @@ onMounted(() =>{
   display: flex;
   color: #64676a;
   max-width: 1500px;
-  margin: 0 auto;
+  margin: 20px 30px;
 }
 .menus{
   padding: 20px 0;
@@ -73,11 +82,10 @@ onMounted(() =>{
   }
 }
 .title{
-  font-size: 65px;
   font-weight: bold;
-  text-align: right;
-  position: fixed;
-  color: rgba(0, 0, 0, 0.2);
-  bottom: 20px;
+}
+.menu-button{
+  width: 80%;
+  text-align: center;
 }
 </style>
