@@ -11,7 +11,7 @@ import {UserStore} from "@/store/UserStore";
 // 设置默认后端服务地址
 axios.defaults.baseURL = "http://localhost:8080"
 
-const {message, notification, dialog} = createDiscreteApi(["message", "notification", "dialog"])
+const {message, notification, dialog, loadingBar} = createDiscreteApi(["message", "notification", "dialog", "loadingBar"])
 
 /*
  *axios
@@ -28,6 +28,7 @@ app.provide("axios", axios)
 app.provide("message", message)
 app.provide("notification", notification)
 app.provide("dialog", dialog)
+app.provide("loadingBar", loadingBar)
 app.provide("server_url", axios.defaults.baseURL)
 
 app.use(naive)
