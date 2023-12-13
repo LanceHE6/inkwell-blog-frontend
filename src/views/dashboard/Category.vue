@@ -116,7 +116,7 @@ const loadData = async () => {
     categoryList.value = result.data.rows
     setInterval(() =>{
       loading.value = false
-    }, 1000)
+    }, 500)
   }else {
     console.log("请求失败")
   }
