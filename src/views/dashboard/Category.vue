@@ -23,8 +23,8 @@
               <td>{{ category.name }}</td>
               <td>
                 <n-space>
-                  <n-button @click="toUpdate(category)">修改</n-button>
-                  <n-button @click="del(category)">删除</n-button>
+                  <n-button @click="toUpdate(category)" type="info">修改</n-button>
+                  <n-button @click="del(category)" type="error">删除</n-button>
                 </n-space>
               </td>
             </tr>

@@ -10,7 +10,7 @@
         :defaultConfig="editorConfig"
         :mode="mode"
         v-model="valueHtml"
-        style="height: 400px; overflow-y: hidden"
+        style="height: 100%; min-height: 400px"
         @onCreated="handleCreated"
         @onChange="handleChange"
 

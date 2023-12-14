@@ -9,8 +9,13 @@
             <template #footer>
               <n-space align="center">
                 <div>发布时间: {{article.createTime}}</div>
-                <n-button @click="toUpdate(article)">修改</n-button>
-                <n-button @click="del(article)">删除</n-button>
+                <div style="margin-left: 650px">
+                  <n-button @click="toUpdate(article)" type="info">修改</n-button>
+                </div>
+                <div>
+                  <n-button @click="del(article)" type="error">删除</n-button>
+                </div>
+
               </n-space>
             </template>
           </n-card>

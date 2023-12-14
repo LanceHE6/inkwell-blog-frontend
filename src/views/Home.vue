@@ -1,49 +1,77 @@
 <template>
-  <div class="container">
+  <div class="head">
     <div class="nav">
-      <div @click="homePage">首页</div>
 
-      <n-dropdown trigger="hover" :options="avatarOption" @select="handleSelect">
-        <n-avatar
-            round
-            size="medium"
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-        />
-      </n-dropdown>
+        <div @click="homePage" style="font-size: 24px">首页</div>
+        <div style="font-size: 24px">关于</div>
+
+        <n-dropdown trigger="hover" :options="avatarOption" @select="handleSelect">
+          <n-avatar
+              round
+              size="huge"
+              :src=loadAvatar
+          />
+        </n-dropdown>
+
     </div>
 
-    <n-divider />
-    <n-space class="search">
-
-      <n-input-group>
-        <!--        下拉框选择分类-->
-        <n-popselect @update:value="searchByCategory" v-model:value="selectedCategory" :options="categoryOptions" trigger="click">
-          <n-button size="medium">{{categoryName || '全部'}}</n-button>
-        </n-popselect>
-
-        <n-input v-model:value="pageInfo.keyword" :style="{ width: '500px' }" placeholder="请输入关键字" />
-        <n-button type="primary" ghost @click="loadArticle(0)"> 搜索 </n-button>
-      </n-input-group>
-
-    </n-space>
-
-    <div v-for="(blog, index) in articleListInfo" style="margin-bottom:15px;cursor: pointer;">
-      <n-card :title="blog.title" @click="toDetail(blog)">
-        {{ blog.content }}
-
-        <template #footer>
-          <n-space align="center">
-            <div>发布时间：{{ blog.create_time }}</div>
-          </n-space>
-        </template>
-      </n-card>
+    <div class="head-avatar">
+      <n-avatar
+          round
+          :size="160"
+          :src="server_url + '/static/images/avatar.jpg'"
+      />
     </div>
 
-    <n-pagination @update:page="loadArticle" v-model:page="pageInfo.page" :page-count="pageInfo.pageCount" />
-
-    <n-divider />
+    <div class="title">
+      本当の声を響かせてよ
+    </div>
 
   </div>
+
+  <div class="bg">
+    <div class="container">
+
+      <n-divider />
+      <n-space class="search">
+
+        <div class="search-container">
+          <n-input-group>
+            <!--        下拉框选择分类-->
+            <n-popselect @update:value="searchByCategory" v-model:value="selectedCategory" :options="categoryOptions" trigger="click">
+              <n-button size="medium">{{categoryName || '全部'}}</n-button>
+            </n-popselect>
+
+            <n-input v-model:value="pageInfo.keyword" :style="{ width: '1080px'}" placeholder="请输入关键字"/>
+            <n-button type="primary" @click="loadArticle(0)" style="background-color: rgba(44, 110, 231,1)"> 搜索 </n-button>
+          </n-input-group>
+        </div>
+
+
+      </n-space>
+
+      <div v-for="(blog, index) in articleListInfo" class="blog-list">
+
+        <n-card :title="blog.title" @click="toDetail(blog)">
+          <n-card>{{ blog.content }}</n-card>
+
+          <template #footer>
+            <n-space align="center">
+              <div style="justify-self: end">发布时间：{{ blog.create_time }}</div>
+            </n-space>
+          </template>
+        </n-card>
+
+      </div>
+
+      <n-pagination @update:page="loadArticle" v-model:page="pageInfo.page" :page-count="pageInfo.pageCount" />
+
+      <n-divider />
+
+    </div>
+  </div>
+
+
 </template>
 
 <script setup>
@@ -60,6 +88,7 @@ const route = useRoute()
 const message = inject("message")
 const dialog = inject("dialog")
 const axios = inject("axios")
+const server_url = inject("server_url")
 
 const userAvatarOption = [
     {
@@ -101,6 +130,12 @@ const avatarOption = computed(() => {
     return adminAvatarOption
   }
 })
+const loadAvatar = computed(() => {
+  if (userStore.avatar === ""){
+    return "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
+  }
+  return userStore.avatar
+})
 const handleSelect = (key) => {
   if (key === "logout"){
     userStore.logout()
@@ -120,7 +155,7 @@ const articleListInfo = ref([])
 // 查询和分页数据
 const pageInfo = reactive({
   page: 1,
-  pageSize: 6,
+  pageSize: 4,
   pageCount: 0,
   count: 0,
   keyword: "",
@@ -204,44 +239,8 @@ const dashboard = () => {
   router.push("/login")
 }
 
-
 </script>
 
-<style lang="scss" scoped>
+<style src="../assets/css/home.css" scoped>
 
-.search{
-  margin-bottom: 15px;
-}
-.container {
-  width: 1200px;
-  margin: 0 auto;
-}
-
-.nav {
-  display: flex;
-  font-size: 20px;
-  padding-top: 20px;
-  color: #64676a;
-  // 向右对齐
-  justify-content: flex-end;
-
-  div {
-    cursor: pointer;
-    margin-right: 15px;
-
-    &:hover {
-      color: #70C0E8;
-    }
-
-    span {
-      font-size: 12px;
-    }
-  }
-}
-
-.footer {
-  text-align: center;
-  line-height: 25px;
-  color: #64676a;
-}
 </style>

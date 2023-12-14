@@ -1,5 +1,7 @@
 <template>
+  <div class="bg">
   <div class="signup-panel">
+    <n-button size="large" type="primary" class="return-button" ghost @click="router.push('/')">返回首页</n-button>
     <n-card title="用户注册">
       <n-form :rules="rules" :model="user" ref="formRef">
         <n-form-item path="nickname" label="昵称">
@@ -11,12 +13,23 @@
         <n-form-item path="password" label="密码">
           <n-input v-model:value="user.password" type=password placeholder="密码"></n-input>
         </n-form-item>
+        <n-form-item path="confirmPassword" label="确认密码">
+          <n-input v-model:value="user.confirmPassword" type=password placeholder="确认密码"></n-input>
+        </n-form-item>
       </n-form>
       <template #footer>
-        <n-button @click="validateAndSignup">注册</n-button>
-        <n-button strong secondary type="info" @click="redirectToLogin">已有账号？登录</n-button>
+        <n-space vertical>
+          <div class="text-button">
+            <n-button text type="info" @click="redirectToLogin">已有账号？登录</n-button>
+          </div>
+          <div class="signup-button">
+            <n-button @click="validateAndSignup" secondary round type="primary" size="large"  style="width: 100px">注册</n-button>
+          </div>
+        </n-space>
+
       </template>
     </n-card>
+  </div>
   </div>
 </template>
 
@@ -30,6 +43,14 @@ const axios = inject("axios")
 
 const message = inject("message")
 
+// 确认密码的校验函数
+const confirmPasswordValidator = (rule, value, callback) => {
+  if (value !== user.password) {
+    callback(new Error("两次输入的密码不一致"));
+  } else {
+    callback();
+  }
+};
 // 输入校验规则
 let rules = {
   account:[
@@ -39,6 +60,9 @@ let rules = {
   password:[
     {required: true, message: "请输入密码", trigger: "blur"},
     {min: 6, max: 18, message: "密码长度在6到18个字符", trigger: "blur"},
+  ],
+  confirmPassword:[
+    { required: true, trigger: "blur", validator: confirmPasswordValidator},
   ],
   nickname:[
     {required: true, message: "请输入昵称", trigger: "blur"},
@@ -50,7 +74,9 @@ const user = reactive({
   nickname: "",
   account: "",
   password: "",
+  confirmPassword: "",
 })
+
 const formRef = ref(null)
 const validateAndSignup = async () => {
 
@@ -92,6 +118,6 @@ const signup = async () => {
 }
 </script>
 
-<style src="../assets/css/Signup.css">
+<style src="../assets/css/login.css" scoped>
 
 </style>

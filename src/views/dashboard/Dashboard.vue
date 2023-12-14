@@ -6,11 +6,7 @@
     <div class="menus">
       <div v-for="(menu, index) in  menus" :key="index" @click="toPage(menu)">
         <n-button type="primary" size="large" strong ghost :color="(selectedMenu === menu? '#70C0E8' : '')" class="menu-button">
-          <template #icon>
-            <n-icon>
-<!--              <cash-icon />-->
-            </n-icon>
-          </template>
+
           {{menu.name}}
         </n-button>
       </div>
@@ -65,6 +61,7 @@ onMounted(() =>{
   color: #64676a;
   max-width: 1500px;
   margin: 20px 30px;
+
 }
 .menus{
   padding: 20px 0;
@@ -73,13 +70,13 @@ onMounted(() =>{
   text-align: center;
   width: 180px;
   height: 95vh;
-  border-right: 1px solid #e5e5e5;
+  border: #3ACEBC solid 2px;
 }
 .menus div{
   cursor: pointer;
-  &:hover{
-    color: #3a84ff;;
-  }
+}
+.menus div:hover{
+  color: #3a84ff;;
 }
 .title{
   font-weight: bold;

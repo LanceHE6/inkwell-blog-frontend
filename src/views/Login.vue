@@ -1,5 +1,7 @@
 <template>
+  <div class="bg">
   <div class="login-panel">
+    <n-button size="large" type="primary" class="return-button" ghost @click="router.push('/')">返回首页</n-button>
     <n-card title="用户登录">
      <n-form :rules="rules" :model="user">
        <n-form-item path="account" label="账号">
@@ -10,11 +12,22 @@
        </n-form-item>
      </n-form>
       <template #footer>
-        <n-checkbox v-model:checked="user.remember" label="记住我"></n-checkbox>
-        <n-button @click="login">登录</n-button>
-        <n-button strong secondary type="info" @click="redirectToSignup">还没有账号？注册</n-button>
+        <n-space vertical>
+          <div class="remember">
+            <n-checkbox v-model:checked="user.remember" label="记住我"></n-checkbox>
+          </div>
+
+          <div class="text-button">
+            <n-button text type="info" @click="redirectToSignup">还没有账号？注册</n-button>
+          </div>
+          <div class="login-button">
+            <n-button @click="login" secondary round type="primary" size="large">登录</n-button>
+          </div>
+        </n-space>
       </template>
     </n-card>
+  </div>
+
   </div>
 </template>
 
@@ -65,7 +78,6 @@
       userStore.token = result.data.token
       userStore.avatar = result.data.avatar
       localStorage.setItem("token", userStore.token)
-      console.log(userStore.token)
 
       // 记住账号密码
       if (user.remember){
@@ -91,6 +103,6 @@
   }
 </script>
 
-<style src="../assets/css/Login.css">
+<style src="../assets/css/login.css">
 
 </style>
